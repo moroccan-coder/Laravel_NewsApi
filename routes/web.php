@@ -14,7 +14,7 @@
 
 Route::get('/categories',function() {
 
-    return \App\category::all();
+    return \App\User::all();
 
 });
 

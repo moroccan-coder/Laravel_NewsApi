@@ -46,6 +46,7 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    //Return all Comments of the Current User
     public function comments()
     {
         return $this->hasMany(Comment::class);
