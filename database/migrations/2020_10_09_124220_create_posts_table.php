@@ -21,10 +21,11 @@ class CreatePostsTable extends Migration
             $table->string('featured_image')->nullable();
             $table->integer('vote_up')->nullable();
             $table->integer('vote_down')->nullable();
+            $table->timestamps();
             //RelationShipw
             $table->integer('user_id');
             $table->integer('category_id');
-            $table->timestamps();
+            
         });
     }
 
