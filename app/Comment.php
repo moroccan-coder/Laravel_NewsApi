@@ -12,4 +12,21 @@ class Comment extends Model
         'content','date_written','user_id','post_id',
 
     ];
+
+
+
+    public function author()
+    {
+        return $this->belongTo(User::class);
+    }
+
+
+    public function posts()
+    {
+        return $this->belongTo(Post::class);
+    }
+
+
+
+
 }

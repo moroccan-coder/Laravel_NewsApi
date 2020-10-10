@@ -11,6 +11,17 @@
 |
 */
 
+
+Route::get('/categories',function() {
+
+    return \App\category::all();
+
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+
+

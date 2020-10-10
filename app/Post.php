@@ -14,4 +14,23 @@ class Post extends Model
         'vote_up','vote_down','user_id','category_id',
 
     ];
+
+
+
+public function author()
+{
+    return $this->belongTo(User::class);
+}
+
+public function comments()
+{
+    return $this ->hasMany(Comment::class);
+}
+
+public function categories()
+{
+    return $this->belongTo(category::class);
+}
+
+
 }
