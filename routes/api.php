@@ -27,6 +27,19 @@ Route::get('comments/author/{id}','Api\UserController@comments');
 
 
 
+/**
+ * @Post related
+ */
+
+ Route::get('categories','Api\CategoryController@index');
+ Route::get('posts/category/{id}','Api\CategoryController@posts');
+ Route::get('posts','Api\PostController@index');
+ Route::get('post/{id}','Api\PostController@show');
+ Route::get('comments/post/{id}','Api\PostController@comments');
+ // End Post
+
+
+
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
