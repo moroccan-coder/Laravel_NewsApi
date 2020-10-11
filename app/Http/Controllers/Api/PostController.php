@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
+use App\Http\Resources\PostsResource;
 use App\Post;
 use DateTime;
 use Facade\FlareClient\Stacktrace\File;
@@ -21,8 +22,8 @@ class PostController extends Controller
     {
         //
 
-        $posts = \App\Post::paginate(env('POSTS_PER_PAGE'));
-        return new \App\Http\Resources\PostsResource($posts);
+        $posts = Post::with(['comments','author','category'])->paginate(env('POSTS_PER_PAGE'));
+        return new PostsResource($posts);
     }
 
     /**
@@ -96,8 +97,8 @@ class PostController extends Controller
     {
         //
 
-        $post = \App\Post::find($id);
-        return new \App\Http\Resources\PostResource($post);
+        $post = Post::with(['comments','author','category'])->where('id',$id)->get();
+        return new PostResource($post);
 
 
     }
@@ -172,6 +173,14 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+
+       $post = Post::find($id);
+       $post->delete();
+        
+       return new PostResource($post);
+
+    
+
     }
 
     public function comments($id)

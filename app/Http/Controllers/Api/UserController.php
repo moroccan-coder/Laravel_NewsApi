@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -64,7 +65,7 @@ class UserController extends Controller
     public function show($id)
     {
         //
-        return new \App\Http\Resources\UserResource(\App\User::find($id));
+        return new UserResource(User::find($id));
 
 
     }
@@ -86,10 +87,22 @@ class UserController extends Controller
             $user->name=$request->get('name');
         }
 
-        if($request->has('avatar'))
-        {
-            $user->avatar =$request->get('avatar');
-        }
+        // TODO: Handle 404 error
+         if($request->hasFile('avatar'))
+         {
+             $featuredImage = $request->file('avatar');
+             $filename = time().$featuredImage->getClientOriginalName();
+            // Storage::disk('images')->putFileAs($filename, $featuredImage,$filename);
+           
+            //Storage::putFile('public/images', $featuredImage,'public');
+
+           $path= Storage::put('public/images/', $featuredImage, 'public');
+
+          //   Storage::putFile('photos', new File('/path/to/photo'), 'public');
+
+         }
+
+         $user->avatar = url($path);
 
         $user->save();
 

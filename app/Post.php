@@ -19,7 +19,7 @@ class Post extends Model
 
 public function author()
 {
-    return $this->belongTo(User::class);
+    return $this->belongsTo(User::class,'user_id','id');
 }
 
 public function comments()
@@ -27,9 +27,9 @@ public function comments()
     return $this ->hasMany(Comment::class);
 }
 
-public function categories()
+public function category()
 {
-    return $this->belongTo(category::class);
+    return $this->belongsTo(category::class);
 }
 
 

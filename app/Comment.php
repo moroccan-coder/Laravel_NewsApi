@@ -17,13 +17,13 @@ class Comment extends Model
 
     public function author()
     {
-        return $this->belongTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
 
     public function posts()
     {
-        return $this->belongTo(Post::class);
+        return $this->belongsTo(Post::class);
     }
 
 
