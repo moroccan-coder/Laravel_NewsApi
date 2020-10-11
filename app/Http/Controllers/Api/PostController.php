@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PostResource;
+use App\Post;
+use DateTime;
+use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -29,6 +34,56 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+
+        $request->validate([
+        'title'=> 'required',
+        'content' => 'required',
+        'category_id'=> 'required',
+        ]);
+
+        $user = $request->user();
+
+        $post = new Post();
+
+        $post->title = $request->get('title');
+        $post->content = $request->get('content');
+        
+
+        if( intval($request->get('category_id')) !=0 )
+
+        {
+            $post->category_id = intval($request->get('category_id'));
+        }
+        
+        $post->user_id = $user->id;
+
+        // TODO: Handle 404 error
+         if($request->hasFile('featured_image'))
+         {
+             $featuredImage = $request->file('featured_image');
+             $filename = time().$featuredImage->getClientOriginalName();
+            // Storage::disk('images')->putFileAs($filename, $featuredImage,$filename);
+           
+            //Storage::putFile('public/images', $featuredImage,'public');
+
+           $path= Storage::put('public/images/', $featuredImage, 'public');
+
+          //   Storage::putFile('photos', new File('/path/to/photo'), 'public');
+
+         }
+
+         $post->featured_image = url($path);
+        
+
+        $post->vote_up = 0;
+        $post->vote_down =0;
+
+        $post->date_written =now()->format('Y-m-d H:i:s');
+
+        $post->save();
+
+        return new PostResource($post);
+
     }
 
     /**
@@ -57,6 +112,55 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+        $user = $request->user();
+
+        $post = Post::find($id);
+
+
+
+        if($request->has('title'))
+        {
+            $post->title = $request->get('title');
+        }
+
+        if($request->has('content'))
+        {
+            $post->content = $request->get('content');
+        }
+
+        if($request->has('category_id'))
+        {
+            if( intval($request->get('category_id')) !=0 )
+
+            {
+                $post->category_id = intval($request->get('category_id'));
+            }
+        }
+
+        // TODO: Handle 404 error
+         if($request->hasFile('featured_image'))
+         {
+             $featuredImage = $request->file('featured_image');
+             $filename = time().$featuredImage->getClientOriginalName();
+            // Storage::disk('images')->putFileAs($filename, $featuredImage,$filename);
+           
+            //Storage::putFile('public/images', $featuredImage,'public');
+
+           $path= Storage::put('public/images/', $featuredImage, 'public');
+
+          //   Storage::putFile('photos', new File('/path/to/photo'), 'public');
+
+         }
+
+         $post->featured_image = url($path);
+
+        $post->date_written =now()->format('Y-m-d H:i:s');
+
+        $post->save();
+
+        return new PostResource($post);
+
     }
 
     /**

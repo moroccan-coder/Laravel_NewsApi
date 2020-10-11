@@ -51,7 +51,10 @@ Route::get('comments/author/{id}','Api\UserController@comments');
 
 
 
+ // -->  we use the Route inside middleware to ensure the authentication before adding data to db
 Route::middleware('auth:api')->group(function() {
 
  Route::post('update-user/{id}','Api\UserController@update');
+ Route::post('posts','Api\PostController@store');
+ Route::post('post/{id}','Api\PostController@update');
 });
