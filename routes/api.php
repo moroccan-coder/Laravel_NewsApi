@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,14 @@ Route::get('comments/author/{id}','Api\UserController@comments');
  Route::get('post/{id}','Api\PostController@show');
  Route::get('comments/post/{id}','Api\PostController@comments');
  // End Post
+
+
+
+ // POST Requests Routes
+ Route::post('register','Api\UserController@store');
+ Route::post('token','Api\UserController@getToken');
+
+
 
 
 
