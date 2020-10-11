@@ -79,6 +79,21 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+      
+        $user = User::find($id);
+        if($request->has('name'))
+        {
+            $user->name=$request->get('name');
+        }
+
+        if($request->has('avatar'))
+        {
+            $user->avatar =$request->get('avatar');
+        }
+
+        $user->save();
+
+        return new UserResource($user);
     }
 
     /**
